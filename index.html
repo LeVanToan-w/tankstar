@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tankstar</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background: none;
+        }
+        .container {
+            width: 200px;
+            height: 100px;
+            border:  1px solid black;
+            position: fixed;
+            transform: translateX(-50%);
+            left: 50%;
+            top: 100px;
+            border-radius: 15px;
+
+        }
+        #skip-chest-animation {
+            position: fixed;
+            transform: translateX(-50%);
+            left: 50%;
+            top: 30px;
+            color: white;
+            background-color: red;
+            border-radius: 15px;
+        }
+        #skip-chest-animation:hover {
+            background-color: blue;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="skip-chest-animation" onclick="fc1()">Skip Chest Animation</button>
+    </div>
+    <script>
+        function fc1() {
+            var baseModules = h5gg.getRangesList("UnityFramework");
+            var baseAddress = Number(baseModules[0].start);
+            var offset = 0x6D14FF8;
+            var targetAddress = baseAddress + offset;
+
+            h5gg.setValue(targetAddress, "0xD65F03C0", "I32");
+            alert("Da tat chest animation thanh cong!")
+        }
+    </script>
+</body>
+</html>
