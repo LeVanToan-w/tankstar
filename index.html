@@ -43,15 +43,29 @@
         <button id="skip-chest-animation" onclick="fc1()">Skip Chest Animation</button>
     </div>
     <script>
-        function fc1() {
-            var baseModules = h5gg.getRangesList("UnityFramework");
-            var baseAddress = Number(baseModules[0].start);
-            var offset = 0x6D14FF8;
-            var targetAddress = baseAddress + offset;
+       h5gg.require(7.9);
 
-            h5gg.setValue(targetAddress, 0xD65F03C0, "I32");
-            alert("Da tat chest animation thanh cong!")
-        }
+    var h5frida = h5gg.loadPlugin("h5frida", "h5frida-15.1.24.dylib");
+    if(!h5frida) throw "Failed to load h5frida plugin";
+    alert("frida plugin version="+h5frida.pluginVersion() + "\nfrida core version="+h5frida.coreVersion());
+    function ActiveCodePatch(fpath, rvaddr, bytes) {
+        if(!h5frida.ActiveCodePatch(fpath, rvaddr, bytes)) {
+            var result = h5frida.ApplyCodePatch(fpath, rvaddr, bytes);
+            alert(fpath+":0x"+rvaddr.toString(16)+"-PatchFailed!\n" + result);return false;
+        } return true;
+    }
+    function DeactiveCodePatch(fpath, rvaddr, bytes) {
+        return h5frida.DeactiveCodePatch(fpath, rvaddr, bytes);
+    }
+    function fc1() {
+        var result = ActiveCodePatch("Frameworks/UnityFramework.framework/UnityFramework", 0x6D14FF8,  "0xD65F03C0");
+        if(result) {
+            alert("Da block thanh cong");
+        } else {
+            alert("That bai");
+        };
+    };
+
     </script>
 </body>
 </html>
